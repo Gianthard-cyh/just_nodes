@@ -1,6 +1,7 @@
 import { reactive, ref } from "vue";
 import { EdgeData, GhostEdgeData } from "./edgeData";
 import { NodeData } from "./nodeData";
+import { PortData } from "./portData";
 
 export interface EditorOptions {
   nodes?: NodeData[]
@@ -20,8 +21,8 @@ export class EditorData {
     this.ghostEdge = reactive({
       startX: ref(0), startY: ref(0), endX: ref(0), endY: ref(0),
       activated: false,
-      from: new NodeData({ title: "" }),
-      to: new NodeData({ title: "" }),
+      from: new PortData({ title: "" }),
+      to: new PortData({ title: "" }),
     })
   }
 }
