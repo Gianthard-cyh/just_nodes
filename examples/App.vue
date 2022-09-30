@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import NodeEditor from '../pakage/nodeEditor/index.vue'
+import NodeEditor from '../package/nodeEditor/index.vue'
 </script>
 
 <template>
