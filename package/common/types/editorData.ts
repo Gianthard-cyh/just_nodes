@@ -1,16 +1,18 @@
 import { reactive, ref } from "vue";
 import { EdgeData, GhostEdgeData } from "./edgeData";
-import { NodeData, NodeOptions } from "./nodeData";
+import { NodeData, NodeDefinition, NodeOptions } from "./nodeData";
 import { PortData } from "./portData";
 
 export interface EditorOptions {
   nodes?: NodeData[]
+  nodeTypes?: NodeDefinition[]
   edges?: EdgeData[]
 }
 
 export class EditorData {
   nodes: NodeData[]
   edges: EdgeData[]
+  nodeTypes: NodeDefinition[]
   ghostEdge: GhostEdgeData
 
   constructor(
@@ -24,6 +26,7 @@ export class EditorData {
       from: new PortData({ title: "" }),
       to: new PortData({ title: "" }),
     })
+    this.nodeTypes = options.nodeTypes ?? []
   }
 
   addNode(node: NodeData): EditorData
@@ -32,5 +35,15 @@ export class EditorData {
     if (node instanceof NodeData) { this.nodes.push(node) }
     else { this.nodes.push(new NodeData(node)) }
     return this
+  }
+
+  defineNode(node: NodeDefinition) {
+    this.nodeTypes.push(node)
+  }
+
+  addDefinedNode(node: NodeDefinition) {
+    this.nodes.push(new NodeData({
+      title: node.title, ports: node.ports?.map((item) => new PortData(item))
+    }))
   }
 }

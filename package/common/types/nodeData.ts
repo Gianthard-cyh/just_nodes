@@ -7,6 +7,11 @@ export interface NodeOptions {
   y?: number
 }
 
+export interface NodeDefinition {
+  title: string,
+  ports?: PortOptions[]
+}
+
 export class NodeData implements NodeOptions {
 
   title: string

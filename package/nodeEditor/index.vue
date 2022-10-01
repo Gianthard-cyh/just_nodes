@@ -26,7 +26,7 @@ function findPort(port: PortData): NodeData | null {
   return result
 }
 
-const { elementX: x, elementY: y } = useMouseInElement(editorRef)
+const { x: mx, elementX: x, y: my, elementY: y } = useMouseInElement(editorRef)
 
 watch(data, () => {
   data.edges.forEach((edge) => {
@@ -54,17 +54,22 @@ watchEffect(() => {
 useEventListener(editorRef, 'pointerup', () => {
   data.ghostEdge.activated = false
 })
+
+function onRightClick() {
+
+}
 provide('globalData', data)
 </script>
 
 <template>
   {{ data }}
-  <svg ref="editorRef" h-full w-full>
+  <svg ref="editorRef" h-full w-full @click.right="onRightClick">
     <Edges :data="data.edges" />
     <Edges v-if="data.ghostEdge.activated" :data="[data.ghostEdge]" />
     <foreignObject :height="3 * height" :width="3 * width">
       <Nodes :data="data.nodes" />
     </foreignObject>
+
   </svg>
 </template>
 

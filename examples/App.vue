@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { NodeData } from '../package/common/types'
-import type { EditorOptions } from '../package/common/types/editorData'
 import { EditorData } from '../package/common/types/editorData'
 import NodeEditor from '../package/nodeEditor/index.vue'
 

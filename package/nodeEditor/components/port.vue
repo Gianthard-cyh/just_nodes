@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useElementBounding } from '@vueuse/core'
 import type { Ref } from 'vue'
-import { inject, onMounted, ref, watchEffect } from 'vue'
+import { inject, onMounted, ref } from 'vue'
 import type { EdgeData } from '../../common/types'
 import type { EditorData } from '../../common/types/editorData'
 import type { PortData } from '../../common/types/portData'
