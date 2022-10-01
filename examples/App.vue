@@ -5,8 +5,9 @@ import { EditorData } from '../package/common/types/editorData'
 import NodeEditor from '../package/nodeEditor/index.vue'
 
 const data = new EditorData({}).addNode({ title: '123' })
-const node = new NodeData({ title: '133' }).addPort({ title: '6636' }).addPort({ title: '6636' })
-data.addNode(node)
+const node1 = new NodeData({ title: '133' }).addPort({ title: '6636' }).addPort({ title: '6636' })
+const node2 = new NodeData({ title: '133' }).addPort({ title: '6636' }).addPort({ title: '6636' })
+data.addNode(node1).addNode(node2)
 </script>
 
 <template>
