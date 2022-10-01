@@ -37,7 +37,7 @@ const { x, y } = useDraggableInElement({
       v-for="item, i in props.data.ports" :key="i" px2 py1 border-gray-3 border-x border-b
       :class="{ 'rounded-b-6px': i === props.data.ports.length - 1 }"
     >
-      <Port :data="item" :container-ref="props.containerRef" />
+      <Port :data="item" :container-ref="nodeRef.value" />
     </div>
   </div>
 </template>
