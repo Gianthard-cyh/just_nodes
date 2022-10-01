@@ -39,6 +39,7 @@ export class EditorData {
 
   defineNode(node: NodeDefinition) {
     this.nodeTypes.push(node)
+    return this
   }
 
   addDefinedNode(node: NodeDefinition) {

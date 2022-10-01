@@ -83,7 +83,7 @@ provide('globalData', data)
     <Edges v-if="data.ghostEdge.activated" :data="[data.ghostEdge]" />
     <foreignObject :height="3 * height" :width="3 * width">
       <Nodes :data="data.nodes" />
-      <Menu v-if="isMenuOpen" fixed :style="{ left: `${mx}px`, top: `${my}px` }" select-none />
+      <Menu v-if="isMenuOpen" fixed :style="{ left: `${mx}px`, top: `${my}px` }" select-none :data="{ nodeTypes: props.data.nodeTypes }" />
     </foreignObject>
   </svg>
 </template>
