@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import type { Ref } from 'vue'
-import { provide, reactive, ref, watch, watchEffect } from 'vue'
+import { Ref, onMounted, provide, reactive, ref, watch, watchEffect } from 'vue'
+
 import { useElementBounding, useEventListener, useMouseInElement } from '@vueuse/core'
 import type { EditorData } from '../common/types/editorData'
 import type { NodeData } from '../common/types'
 import type { PortData } from '../common/types/portData'
 import Nodes from './components/nodes.vue'
 import Edges from './components/edges.vue'
+import Menu from './components/menu.vue'
 
 const props = defineProps<{ data: EditorData }>()
 const emits = defineEmits<(e: 'update:data') => void>()
@@ -26,7 +27,7 @@ function findPort(port: PortData): NodeData | null {
   return result
 }
 
-const { x: mx, elementX: x, y: my, elementY: y } = useMouseInElement(editorRef)
+const { elementX: x, elementY: y } = useMouseInElement(editorRef)
 
 watch(data, () => {
   data.edges.forEach((edge) => {
@@ -55,21 +56,35 @@ useEventListener(editorRef, 'pointerup', () => {
   data.ghostEdge.activated = false
 })
 
+const isMenuOpen = ref(false)
+const mx = ref(0)
+const my = ref(0)
 function onRightClick() {
-
+  isMenuOpen.value = true
+  mx.value = x.value
+  my.value = y.value
 }
+function onLeftClick() {
+  isMenuOpen.value = false
+}
+onMounted(() => {
+  editorRef!.value!.oncontextmenu = () => {
+    onRightClick()
+    return false
+  }
+})
 provide('globalData', data)
 </script>
 
 <template>
   {{ data }}
-  <svg ref="editorRef" h-full w-full @click.right="onRightClick">
+  <svg ref="editorRef" h-full w-full @click.right="onRightClick" @click.left="onLeftClick">
     <Edges :data="data.edges" />
     <Edges v-if="data.ghostEdge.activated" :data="[data.ghostEdge]" />
     <foreignObject :height="3 * height" :width="3 * width">
       <Nodes :data="data.nodes" />
+      <Menu v-if="isMenuOpen" fixed :style="{ left: `${mx}px`, top: `${my}px` }" select-none />
     </foreignObject>
-
   </svg>
 </template>
 

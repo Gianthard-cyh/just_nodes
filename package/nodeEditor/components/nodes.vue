@@ -11,7 +11,7 @@ const refContainer = { value: ref(null) }
 
 <template>
   <div :ref="refContainer.value" h-full w-full>
-    <Node v-for="item, i in props.data" :key="i" :data="item" :container-ref="refContainer.value" />
+    <Node v-for="item, i in props.data" :key="i" :data="item" :container-ref="refContainer.value" shadow :class="{ 'border-amber': i === 0 }" />
   </div>
 </template>
 
