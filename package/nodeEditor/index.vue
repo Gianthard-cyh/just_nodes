@@ -15,9 +15,11 @@ const width = ref(1000)
 
 const editorRef = ref<HTMLElement | null>(null)
 
+const data = reactive(props.data)
+
 function findPort(port: PortData): NodeData | null {
   let result: NodeData | null = null
-  props.data.nodes.forEach((node) => {
+  data.nodes.forEach((node) => {
     if (node.ports.find(i => (port === i)))
       result = node
   })
@@ -26,8 +28,8 @@ function findPort(port: PortData): NodeData | null {
 
 const { elementX: x, elementY: y } = useMouseInElement(editorRef)
 
-watch(props.data, () => {
-  props.data.edges.forEach((edge) => {
+watch(data, () => {
+  data.edges.forEach((edge) => {
     if (!findPort(edge.from))
       return
 
@@ -39,31 +41,30 @@ watch(props.data, () => {
     edge.endY = edge.to.cy + findPort(edge.to)!.y
   })
 
-  if (findPort(props.data.ghostEdge.from)) {
-    props.data.ghostEdge.startX = +findPort(props.data.ghostEdge.from)!.x
-    props.data.ghostEdge.startY = props.data.ghostEdge.from.cy + findPort(props.data.ghostEdge.from)!.y
+  if (findPort(data.ghostEdge.from)) {
+    data.ghostEdge.startX = +findPort(data.ghostEdge.from)!.x
+    data.ghostEdge.startY = data.ghostEdge.from.cy + findPort(data.ghostEdge.from)!.y
   }
-  emits('update:data')
 })
 
 watchEffect(() => {
-  props.data.ghostEdge.endX = x.value
-  props.data.ghostEdge.endY = y.value
+  data.ghostEdge.endX = x.value
+  data.ghostEdge.endY = y.value
 })
 
 useEventListener(editorRef, 'pointerup', () => {
-  props.data.ghostEdge.activated = false
+  data.ghostEdge.activated = false
 })
-provide('globalData', props.data)
+provide('globalData', data)
 </script>
 
 <template>
-  {{ props.data }}
+  {{ data }}
   <svg ref="editorRef" h-full w-full>
-    <Edges :data="props.data.edges" />
-    <Edges v-if="props.data.ghostEdge.activated" :data="[props.data.ghostEdge]" />
+    <Edges :data="data.edges" />
+    <Edges v-if="data.ghostEdge.activated" :data="[data.ghostEdge]" />
     <foreignObject :height="3 * height" :width="3 * width">
-      <Nodes :data="props.data.nodes" />
+      <Nodes :data="data.nodes" />
     </foreignObject>
   </svg>
 </template>
