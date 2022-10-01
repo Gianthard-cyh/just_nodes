@@ -32,17 +32,16 @@ watch(data, () => {
   data.edges.forEach((edge) => {
     if (!findPort(edge.from))
       return
-
-    edge.startX = +findPort(edge.from)!.x
+    edge.startX = edge.from.cx + findPort(edge.from)!.x
     edge.startY = edge.from.cy + findPort(edge.from)!.y
     if (!findPort(edge.to))
       return
-    edge.endX = +findPort(edge.to)!.x
+    edge.endX = edge.to.cx + findPort(edge.to)!.x
     edge.endY = edge.to.cy + findPort(edge.to)!.y
   })
 
   if (findPort(data.ghostEdge.from)) {
-    data.ghostEdge.startX = +findPort(data.ghostEdge.from)!.x
+    data.ghostEdge.startX = data.ghostEdge.from.cx + findPort(data.ghostEdge.from)!.x
     data.ghostEdge.startY = data.ghostEdge.from.cy + findPort(data.ghostEdge.from)!.y
   }
 })
