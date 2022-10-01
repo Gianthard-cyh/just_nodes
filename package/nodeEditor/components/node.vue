@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
-import { inject, nextTick, onMounted, ref } from 'vue'
+import { inject, ref } from 'vue'
 
 import { useDraggableInElement } from '../../common/composables/useDraggableInElement'
 import type { EditorData } from '../../common/types/editorData'
@@ -18,6 +18,7 @@ const globalData = inject<EditorData>('globalData')
 const { x, y } = useDraggableInElement({
   target: nodeRef.value,
   container: props.containerRef,
+  initPos: { x: props.data.x, y: props.data.y },
   onMove: (x, y) => {
     if (globalData) {
       globalData.nodes[globalData.nodes.indexOf(props.data)].x = x

@@ -10,6 +10,8 @@ export interface NodeOptions {
 export interface NodeDefinition {
   title: string,
   ports?: PortOptions[]
+  x?: number
+  y?: number
 }
 
 export class NodeData implements NodeOptions {

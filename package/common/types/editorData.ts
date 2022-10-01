@@ -44,7 +44,10 @@ export class EditorData {
 
   addDefinedNode(node: NodeDefinition) {
     this.nodes.push(new NodeData({
-      title: node.title, ports: node.ports?.map((item) => new PortData(item))
+      title: node.title,
+      ports: node.ports?.map((item) => new PortData(item)),
+      x: node.x ?? 0,
+      y: node.y ?? 0
     }))
   }
 }

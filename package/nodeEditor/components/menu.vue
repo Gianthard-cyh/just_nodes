@@ -1,18 +1,29 @@
 <script setup lang="ts">
+import { useMouse, useMouseInElement } from '@vueuse/core'
+import type { Ref } from 'vue'
 import { inject, ref } from 'vue'
 import type { MenuData } from '../../common/types'
 import type { EditorData } from '../../common/types/editorData'
 import type { NodeDefinition } from '../../common/types/nodeData'
 
-const props = defineProps<{ data: MenuData }>()
+const props = defineProps<{ data: MenuData; containerRef: Ref<HTMLElement | SVGElement | null> }>()
+const emits = defineEmits<{ (e: 'close'): void }>()
 const mode = ref('menu')
+
+const { elementX, elementY } = useMouseInElement(props.containerRef)
 
 const globalData = inject<EditorData>('globalData')
 function onCreate() {
   mode.value = 'create'
 }
 function onCreateNode(node: NodeDefinition) {
-  globalData?.addNode(node)
+  globalData?.addDefinedNode({
+    title: node.title,
+    ports: node.ports,
+    x: elementX.value,
+    y: elementY.value,
+  })
+  emits('close')
 }
 </script>
 

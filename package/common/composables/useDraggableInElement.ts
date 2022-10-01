@@ -4,6 +4,7 @@ import { nextTick, onMounted, ref, unref } from "vue";
 export interface useDraggableInElementOptions {
   target: MaybeRef<HTMLElement | SVGElement | null | undefined>,
   container: MaybeRef<HTMLElement | SVGElement | null | undefined>,
+  initPos?: { x: number, y: number },
   onStart?: (x: number, y: number) => void
   onMove?: (x: number, y: number) => void
   onEnd?: (x: number, y: number) => void
@@ -12,8 +13,8 @@ export interface useDraggableInElementOptions {
 export function useDraggableInElement(
   options: useDraggableInElementOptions
 ) {
-  const x = ref(0)
-  const y = ref(0)
+  const x = ref(options.initPos ? options.initPos.x : 0)
+  const y = ref(options.initPos ? options.initPos.y : 0)
   onMounted(async () => {
     await nextTick()
     if (!unref(options.container)) {

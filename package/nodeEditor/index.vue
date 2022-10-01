@@ -14,7 +14,7 @@ const emits = defineEmits<(e: 'update:data') => void>()
 const height = ref(500)
 const width = ref(1000)
 
-const editorRef = ref<HTMLElement | null>(null)
+const editorRef = { value: ref(null) }
 
 const data = reactive(props.data)
 
@@ -27,7 +27,7 @@ function findPort(port: PortData): NodeData | null {
   return result
 }
 
-const { elementX: x, elementY: y } = useMouseInElement(editorRef)
+const { elementX: x, elementY: y } = useMouseInElement(editorRef.value)
 
 watch(data, () => {
   data.edges.forEach((edge) => {
@@ -52,7 +52,7 @@ watchEffect(() => {
   data.ghostEdge.endY = y.value
 })
 
-useEventListener(editorRef, 'pointerup', () => {
+useEventListener(editorRef.value, 'pointerup', () => {
   data.ghostEdge.activated = false
 })
 
@@ -64,11 +64,11 @@ function onRightClick() {
   mx.value = x.value
   my.value = y.value
 }
-function onLeftClick() {
+function onMenuClose() {
   isMenuOpen.value = false
 }
 onMounted(() => {
-  editorRef!.value!.oncontextmenu = () => {
+  editorRef.value.value!.oncontextmenu = () => {
     onRightClick()
     return false
   }
@@ -78,12 +78,12 @@ provide('globalData', data)
 
 <template>
   {{ data }}
-  <svg ref="editorRef" h-full w-full @click.right="onRightClick" @click.left="onLeftClick">
+  <svg :ref="editorRef.value" h-full w-full @click.right="onRightClick" @click.left="onMenuClose">
     <Edges :data="data.edges" />
     <Edges v-if="data.ghostEdge.activated" :data="[data.ghostEdge]" />
     <foreignObject :height="3 * height" :width="3 * width">
       <Nodes :data="data.nodes" />
-      <Menu v-if="isMenuOpen" fixed :style="{ left: `${mx}px`, top: `${my}px` }" select-none :data="{ nodeTypes: props.data.nodeTypes }" />
+      <Menu v-if="isMenuOpen" fixed :style="{ left: `${mx}px`, top: `${my}px` }" :container-ref="editorRef.value" select-none :data="{ nodeTypes: props.data.nodeTypes }" @close="onMenuClose" />
     </foreignObject>
   </svg>
 </template>
