@@ -1,6 +1,6 @@
 import { reactive, ref } from "vue";
 import { EdgeData, GhostEdgeData } from "./edgeData";
-import { NodeData } from "./nodeData";
+import { NodeData, NodeOptions } from "./nodeData";
 import { PortData } from "./portData";
 
 export interface EditorOptions {
@@ -24,5 +24,13 @@ export class EditorData {
       from: new PortData({ title: "" }),
       to: new PortData({ title: "" }),
     })
+  }
+
+  addNode(node: NodeData): EditorData
+  addNode(node: NodeOptions): EditorData
+  addNode(node: NodeData | NodeOptions) {
+    if (node instanceof NodeData) { this.nodes.push(node) }
+    else { this.nodes.push(new NodeData(node)) }
+    return this
   }
 }
