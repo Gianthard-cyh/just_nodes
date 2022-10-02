@@ -45,6 +45,7 @@ function onPointerUp() {
             (((i.from === globalData.ghostEdge.from) && (i.to === props.data)) || ((i.to === globalData.ghostEdge.from && (i.from === props.data)))),
           ))
           && (globalData.ghostEdge.from.type.name === props.data.type.name || globalData.ghostEdge.from.type.name === 'any' || props.data.type.name === 'any')
+          && (globalData.ghostEdge.from.mode !== props.data.mode)
         ) {
           globalData.ghostEdge.activated = false
           globalData.edges.push(edge)
