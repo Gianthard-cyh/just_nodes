@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import { onMounted, reactive, ref } from 'vue'
-import { timestamp } from '_@vueuse_shared@9.3.0@@vueuse/shared'
+import { ref } from 'vue'
 import type { NodeData } from '../../common/types'
-import type { NodeOptions } from '../../common/types/nodeData'
 import Node from './node.vue'
 
 const props = defineProps<{ data: NodeData[] }>()

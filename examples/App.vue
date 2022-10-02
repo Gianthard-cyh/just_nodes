@@ -8,6 +8,7 @@ const node1 = new NodeData({ title: '133' }).addPort({ title: '6636', mode: 'out
 const node2 = new NodeData({ title: '133' }).addPort({ title: '6636' }).addPort({ title: '6636' })
 data.addNode(node1).addNode(node2).defineNode({ title: 'defined node', ports: [{ title: 'defined port', mode: 'out', type: { name: 'string', color: 'rgba(200,50,0)' } }] })
   .defineNode({ title: 'defined node 2', ports: [{ title: 'defined port 2', mode: 'in' }] })
+  .defineNode({ title: 'defined node 3', ports: [{ title: 'defined port 2', mode: 'in', type: { name: 'number', color: 'rgba(200,200,20)' } }] })
 </script>
 
 <template>

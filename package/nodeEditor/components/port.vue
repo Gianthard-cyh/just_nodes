@@ -2,6 +2,7 @@
 import { useElementBounding } from '@vueuse/core'
 import type { Ref } from 'vue'
 import { inject, onMounted, ref } from 'vue'
+import { propsToAttrMap } from '_@vue_shared@3.2.40@@vue/shared'
 import type { EdgeData } from '../../common/types'
 import type { EditorData } from '../../common/types/editorData'
 import type { PortData } from '../../common/types/portData'
@@ -31,7 +32,6 @@ function onPointerUp() {
   if (globalData) {
     if (globalData.ghostEdge.activated === true) {
       if (globalData.ghostEdge.from !== props.data) {
-        globalData.ghostEdge.activated = false
         const edge: EdgeData = {
           startX: 0,
           startY: 0,
@@ -40,7 +40,15 @@ function onPointerUp() {
           from: globalData.ghostEdge.from,
           to: props.data,
         }
-        globalData.edges.push(edge)
+        if (
+          (!globalData.edges.find(i =>
+            (((i.from === globalData.ghostEdge.from) && (i.to === props.data)) || ((i.to === globalData.ghostEdge.from && (i.from === props.data)))),
+          ))
+          && (globalData.ghostEdge.from.type.name === props.data.type.name || globalData.ghostEdge.from.type.name === 'any' || props.data.type.name === 'any')
+        ) {
+          globalData.ghostEdge.activated = false
+          globalData.edges.push(edge)
+        }
       }
     }
   }
