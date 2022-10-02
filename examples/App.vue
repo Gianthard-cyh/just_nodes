@@ -4,7 +4,7 @@ import { EditorData } from '../package/common/types/editorData'
 import NodeEditor from '../package/nodeEditor/index.vue'
 
 const data = new EditorData({})
-const numberType = { name: 'number', color: 'rgba(20,200,20)' }
+const numberType = { name: 'number', color: 'rgba(50,180,50)' }
 data.defineNode({
   title: '相加',
   ports: [
