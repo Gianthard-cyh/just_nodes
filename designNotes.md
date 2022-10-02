@@ -24,12 +24,12 @@ data.registerNodes([{
   port:[
     {
       title:"input port"
-      type:"in"
+      mode:"in"
       color:"rgba(50,30,30)"
     },
     {
       title:"output port"
-      type:"out"
+      mode:"out"
       unoColor:"red-3" //unoCSS 预设颜色
     }
   ]
@@ -44,7 +44,7 @@ data.registerNodes([{
   port:[
     {
       title:"input port"
-      type:"in"
+      mode:"in"
       render:(port)=>{
         return h(
           {
@@ -61,7 +61,7 @@ data.registerNodes([{
     },
     {
       title:"output port"
-      type:"out"
+      mode:"out"
     }
   ]
 }])

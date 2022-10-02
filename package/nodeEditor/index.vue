@@ -14,7 +14,7 @@ const emits = defineEmits<(e: 'update:data') => void>()
 const height = ref(500)
 const width = ref(1000)
 
-const editorRef = { value: ref(null) }
+const editorRef = { value: ref<HTMLElement | null>(null) }
 
 const data = reactive(props.data)
 

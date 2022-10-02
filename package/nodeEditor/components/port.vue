@@ -49,9 +49,9 @@ function onPointerUp() {
 onMounted(() => {
   globalData?.nodes.forEach((node) => {
     if (node.ports.find(i => (i === props.data))) {
-      if (props.data.type === 'in')
+      if (props.data.mode === 'in')
         node.ports.find(i => (i === props.data))!.cx = x.value - cx.value - 9
-      else if (props.data.type === 'out')
+      else if (props.data.mode === 'out')
         node.ports.find(i => (i === props.data))!.cx = right.value - cx.value + 9
       node.ports.find(i => (i === props.data))!.cy = y.value - cy.value + 11
     }
@@ -61,13 +61,13 @@ onMounted(() => {
 
 <template>
   <div ref="portRef" relative flex="~ row" items-center>
-    <svg v-if="data.type === 'in'" relative width="10" height="10" left--13px>
+    <svg v-if="data.mode === 'in'" relative width="10" height="10" left--13px>
       <circle cursor-crosshair r="4" cx="5" cy="5" color="gray" stroke-bluegray @pointerdown.stop="onPointerDown" @pointerup="onPointerUp" />
     </svg>
     <div>
       {{ props.data.title }}
     </div>
-    <svg v-if="data.type === 'out'" relative width="10" height="10" right--13px>
+    <svg v-if="data.mode === 'out'" relative width="10" height="10" right--13px>
       <circle cursor-crosshair r="4" cx="5" cy="5" color="gray" stroke-bluegray @pointerdown.stop="onPointerDown" @pointerup="onPointerUp" />
     </svg>
   </div>
