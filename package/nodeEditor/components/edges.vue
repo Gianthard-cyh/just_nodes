@@ -8,7 +8,7 @@ const props = defineProps<{
 </script>
 
 <template>
-  <Edge v-for="item, i in props.data" :key="i" :data="item" fill-none stroke-2 stroke-red />
+  <Edge v-for="item, i in props.data" :key="i" :data="item" fill-none stroke-2 :stroke="`url(#${item.from.type.name + item.to.type.name})`" />
 </template>
 
 <style scoped>

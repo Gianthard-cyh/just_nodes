@@ -1,13 +1,14 @@
 <script setup lang="ts">
-import { Ref, onMounted, provide, reactive, ref, watch, watchEffect } from 'vue'
+import { Ref, computed, onMounted, provide, reactive, ref, watch, watchEffect } from 'vue'
 
 import { useElementBounding, useEventListener, useMouseInElement } from '@vueuse/core'
 import type { EditorData } from '../common/types/editorData'
-import type { NodeData } from '../common/types'
+import type { NodeData, linearGradientOptions } from '../common/types'
 import type { PortData } from '../common/types/portData'
 import Nodes from './components/nodes.vue'
 import Edges from './components/edges.vue'
 import Menu from './components/menu.vue'
+import GradientDefs from './components/gradientDefs.vue'
 
 const props = defineProps<{ data: EditorData }>()
 const emits = defineEmits<(e: 'update:data') => void>()
@@ -74,11 +75,20 @@ onMounted(() => {
   }
 })
 provide('globalData', data)
+
+const gradientData = computed<linearGradientOptions[]>(() => {
+  return data.edges.concat(data.ghostEdge).map((item) => {
+    return { startColor: item.from.type.color, endColor: item.to.type.color, id: item.from.type.name + item.to.type.name }
+  })
+})
 </script>
 
 <template>
   {{ data }}
   <svg :ref="editorRef.value" h-full w-full @click.right="onRightClick" @click.left="onMenuClose">
+    <defs>
+      <GradientDefs :data="gradientData" />
+    </defs>
     <Edges :data="data.edges" />
     <Edges v-if="data.ghostEdge.activated" :data="[data.ghostEdge]" />
     <foreignObject :height="3 * height" :width="3 * width">

@@ -62,13 +62,13 @@ onMounted(() => {
 <template>
   <div ref="portRef" relative flex="~ row" items-center>
     <svg v-if="data.mode === 'in'" relative width="10" height="10" left--13px>
-      <circle cursor-crosshair r="4" cx="5" cy="5" color="gray" stroke-bluegray @pointerdown.stop="onPointerDown" @pointerup="onPointerUp" />
+      <circle cursor-crosshair r="4" cx="5" cy="5" :fill="props.data.type.color" stroke-bluegray @pointerdown.stop="onPointerDown" @pointerup="onPointerUp" />
     </svg>
     <div>
       {{ props.data.title }}
     </div>
     <svg v-if="data.mode === 'out'" relative width="10" height="10" right--13px>
-      <circle cursor-crosshair r="4" cx="5" cy="5" color="gray" stroke-bluegray @pointerdown.stop="onPointerDown" @pointerup="onPointerUp" />
+      <circle cursor-crosshair r="4" cx="5" cy="5" :fill="props.data.type.color" stroke-bluegray @pointerdown.stop="onPointerDown" @pointerup="onPointerUp" />
     </svg>
   </div>
 </template>
