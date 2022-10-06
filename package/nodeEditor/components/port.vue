@@ -1,8 +1,9 @@
+<!-- eslint-disable vue/no-mutating-props -->
 <script setup lang="ts">
-import { useElementBounding } from '@vueuse/core'
+import { useElementBounding, useResizeObserver } from '@vueuse/core'
 import type { Ref } from 'vue'
-import { inject, onMounted, ref } from 'vue'
-import { propsToAttrMap } from '_@vue_shared@3.2.40@@vue/shared'
+import { inject, onMounted, ref, watch } from 'vue'
+
 import type { EdgeData } from '../../common/types'
 import type { EditorData } from '../../common/types/editorData'
 import type { PortData } from '../../common/types/portData'
@@ -55,26 +56,33 @@ function onPointerUp() {
   }
 }
 
-onMounted(() => {
-  globalData?.nodes.forEach((node) => {
-    if (node.ports.find(i => (i === props.data))) {
-      if (props.data.mode === 'in')
-        node.ports.find(i => (i === props.data))!.cx = x.value - cx.value - 9
-      else if (props.data.mode === 'out')
-        node.ports.find(i => (i === props.data))!.cx = right.value - cx.value + 9
-      node.ports.find(i => (i === props.data))!.cy = y.value - cy.value + 11
-    }
-  })
-})
+function updatePos() {
+  if (props.data) {
+    if (props.data.mode === 'in')
+      props.data.cx = x.value - cx.value - 9
+    else if (props.data.mode === 'out')
+      props.data.cx = right.value - cx.value + 9
+    props.data.cy = y.value - cy.value + 11
+  }
+}
+onMounted(updatePos)
+useResizeObserver(props.containerRef, updatePos)
 </script>
 
 <template>
-  <div ref="portRef" relative flex="~ row" items-center>
+  <div ref="portRef" relative flex="~ row" items-center :class="{ 'justify-end': props.data.mode === 'out' }">
     <svg v-if="data.mode === 'in'" relative width="10" height="10" left--13px>
       <circle cursor-crosshair r="4" cx="5" cy="5" :fill="props.data.type.color" stroke-bluegray @pointerdown.stop="onPointerDown" @pointerup="onPointerUp" />
     </svg>
-    <div>
+    <div text-sm>
       {{ props.data.title }}
+    </div>
+    <div
+      v-if="props.data.type.input === 'input' && props.data.mode !== 'out'
+        && !globalData?.edges.find(i => (i.from === props.data || i.to === props.data))
+      "
+    >
+      <input max-w-100px mx-2 rounded-3px px-1 py3px outline-none border border-gray-2 hover="bg-gray-1 border-gray-3" focus:bg-gray-1 @pointerdown.stop="() => {}">
     </div>
     <svg v-if="data.mode === 'out'" relative width="10" height="10" right--13px>
       <circle cursor-crosshair r="4" cx="5" cy="5" :fill="props.data.type.color" stroke-bluegray @pointerdown.stop="onPointerDown" @pointerup="onPointerUp" />

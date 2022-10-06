@@ -26,6 +26,6 @@ export class PortData implements PortOptions {
     this.cx = options.cx ?? 0
     this.cy = options.cy ?? 0
     this.mode = options.mode ?? 'in'
-    this.type = options.type ?? { color: 'rgba(200,200,200,1)', name: "any" }
+    this.type = options.type ?? { color: 'rgba(200,200,200,1)', name: "any", input: 'input' }
   }
 }

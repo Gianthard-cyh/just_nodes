@@ -39,7 +39,7 @@ function onCreateNode(node: NodeDefinition) {
     </div>
     <div v-if="mode === 'create'">
       <div v-for="node in props.data.nodeTypes" :key="node.title" hover:bg-gray-2 py1 px2 border-b border-gray-3 text-sm @click.stop="onCreateNode(node)">
-        {{ node }}
+        {{ node.title }}
       </div>
     </div>
   </div>

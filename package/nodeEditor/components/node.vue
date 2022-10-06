@@ -37,7 +37,7 @@ const { x, y } = useDraggableInElement({
 
 <template>
   <div :ref="nodeRef.value" opacity-80 bg-white rounded-6px fixed select-none :style="{ left: `${x}px`, top: `${y}px` }">
-    <div bg-amber-5 rounded-t-6px px2 py1 c-white border-1 border-b-gray-3 :class="{ 'border-gray-5': props.activated, ' border-gray-3': !props.activated }">
+    <div text-sm bg-blue-7 rounded-t-6px px2 py1 c-white border-1 border-b-gray-3 :class="{ 'border-gray-5': props.activated, ' border-gray-3': !props.activated }">
       {{ props.data.title }}
     </div>
     <div

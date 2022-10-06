@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Ref, computed, onMounted, provide, reactive, ref, watch, watchEffect } from 'vue'
 
-import { useElementBounding, useEventListener, useMouseInElement } from '@vueuse/core'
+import { useEventListener, useFps, useMouseInElement } from '@vueuse/core'
 import type { EditorData } from '../common/types/editorData'
 import type { NodeData, linearGradientOptions } from '../common/types'
 import type { PortData } from '../common/types/portData'
@@ -81,10 +81,13 @@ const gradientData = computed<linearGradientOptions[]>(() => {
     return { startColor: item.from.type.color, endColor: item.to.type.color, id: item.from.type.name + item.to.type.name }
   })
 })
+
+const fps = useFps()
 </script>
 
 <template>
   {{ data }}
+  fps:{{ fps }}
   <svg :ref="editorRef.value" h-full w-full @click.right="onRightClick" @click.left="onMenuClose">
     <defs>
       <GradientDefs :data="gradientData" />
