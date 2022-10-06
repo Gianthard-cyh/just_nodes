@@ -19,12 +19,22 @@ const globalData = inject<EditorData>('globalData')
 function onPointerDown() {
   if (globalData) {
     if (globalData.ghostEdge.activated === false) {
-      globalData.ghostEdge.activated = true
-      globalData.ghostEdge.from = props.data
-      updatePortBounding()
-      updateContainerBounding()
-      globalData.ghostEdge.startX = props.data.cx
-      globalData.ghostEdge.startY = props.data.cy
+      const result = globalData.edges.find(i => (i.to === props.data))
+      if (result) {
+        globalData.edges.splice(globalData.edges.indexOf(result), 1)
+        globalData.ghostEdge.activated = true
+        globalData.ghostEdge.from = result.from
+        updatePortBounding()
+        updateContainerBounding()
+      }
+      else {
+        globalData.ghostEdge.activated = true
+        globalData.ghostEdge.from = props.data
+        updatePortBounding()
+        updateContainerBounding()
+        globalData.ghostEdge.startX = props.data.cx
+        globalData.ghostEdge.startY = props.data.cy
+      }
     }
   }
 }
@@ -38,8 +48,8 @@ function onPointerUp() {
           startY: 0,
           endX: 0,
           endY: 0,
-          from: globalData.ghostEdge.from,
-          to: props.data,
+          from: globalData.ghostEdge.from.mode === 'out' ? globalData.ghostEdge.from : props.data,
+          to: globalData.ghostEdge.from.mode === 'out' ? props.data : globalData.ghostEdge.from,
         }
         if (
           (!globalData.edges.find(i =>
@@ -48,6 +58,9 @@ function onPointerUp() {
           && (globalData.ghostEdge.from.type.name === props.data.type.name || globalData.ghostEdge.from.type.name === 'any' || props.data.type.name === 'any')
           && (globalData.ghostEdge.from.mode !== props.data.mode)
         ) {
+          const result = globalData.edges.find(i => (i.to === props.data))
+          if (result)
+            globalData.edges.splice(globalData.edges.indexOf(result), 1)
           globalData.ghostEdge.activated = false
           globalData.edges.push(edge)
         }

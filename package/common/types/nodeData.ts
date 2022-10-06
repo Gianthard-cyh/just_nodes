@@ -1,5 +1,6 @@
-import { rand, useTimestamp } from "@vueuse/core"
+import { rand, timestamp, useTimestamp } from "@vueuse/core"
 import { PortData, PortOptions } from "./portData"
+import { uid } from "../utils"
 
 export interface NodeOptions {
   title: string
@@ -21,7 +22,6 @@ export class NodeData implements NodeOptions {
   ports: PortData[]
   x: number
   y: number
-  timeStamp: number
   uid: string
 
   constructor(
@@ -31,8 +31,7 @@ export class NodeData implements NodeOptions {
     this.ports = options.ports ?? []
     this.x = options.x ?? 0
     this.y = options.y ?? 0
-    this.timeStamp = useTimestamp().value
-    this.uid = this.timeStamp.toString() + rand(0, 1000000).toString()
+    this.uid = uid().uid
   }
 
   addPort(port: PortOptions): NodeData
