@@ -3,7 +3,7 @@
 
 使用 Vue3 + TS + UnoCSS + Vueuse 开发
 
-[Demo](https://github.com/)
+[LiveDemo](https://melodic-pavlova-fb1640.netlify.app/)
 ## 安装
 ```bash
 npm i just-nodes
