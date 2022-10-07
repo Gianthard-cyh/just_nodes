@@ -60,6 +60,7 @@ useEventListener(editorRef.value, 'pointerup', () => {
 const isMenuOpen = ref(false)
 const mx = ref(0)
 const my = ref(0)
+const menuUpon = ref<NodeData>()
 function onRightClick() {
   isMenuOpen.value = true
   mx.value = x.value
@@ -67,6 +68,7 @@ function onRightClick() {
 }
 function onMenuClose() {
   isMenuOpen.value = false
+  menuUpon.value = undefined
 }
 onMounted(() => {
   editorRef.value.value!.oncontextmenu = () => {
@@ -74,6 +76,11 @@ onMounted(() => {
     return false
   }
 })
+provide('openMenuOnNode', (node: NodeData) => {
+  menuUpon.value = node
+  onRightClick()
+})
+
 provide('globalData', data)
 
 const gradientData = computed<linearGradientOptions[]>(() => {
@@ -94,7 +101,7 @@ const fps = useFps()
     <Edges v-if="data.ghostEdge.activated" :data="[data.ghostEdge]" />
     <foreignObject :height="3 * height" :width="3 * width">
       <Nodes :data="data.nodes" />
-      <Menu v-if="isMenuOpen" fixed :style="{ left: `${mx}px`, top: `${my}px` }" :container-ref="editorRef.value" select-none :data="{ nodeTypes: props.data.nodeTypes }" @close="onMenuClose" />
+      <Menu v-if="isMenuOpen" fixed :style="{ left: `${mx}px`, top: `${my}px` }" :container-ref="editorRef.value" select-none :data="{ nodeTypes: props.data.nodeTypes, nodeUpon: menuUpon }" @close="onMenuClose" />
     </foreignObject>
   </svg>
 </template>

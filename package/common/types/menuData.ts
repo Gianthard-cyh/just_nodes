@@ -1,5 +1,6 @@
-import { NodeDefinition } from "./nodeData";
+import { NodeData, NodeDefinition } from "./nodeData";
 
 export interface MenuData {
   nodeTypes: NodeDefinition[]
+  nodeUpon?: NodeData
 }

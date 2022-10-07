@@ -25,6 +25,17 @@ function onCreateNode(node: NodeDefinition) {
   })
   emits('close')
 }
+function onDelete() {
+  props.data.nodeUpon?.ports.forEach((port) => {
+    const result = globalData?.edges.find(
+      edge => (edge.from === port || edge.to === port),
+    )
+    if (result)
+      globalData?.edges.splice(globalData.edges.indexOf(result), 1)
+  })
+  globalData?.nodes.splice(globalData.nodes.indexOf(props.data.nodeUpon!), 1)
+  emits('close')
+}
 </script>
 
 <template>
@@ -33,7 +44,7 @@ function onCreateNode(node: NodeDefinition) {
       <div hover:bg-gray-2 py1 px2 border-b border-gray-3 text-sm @click.stop="onCreate">
         新建
       </div>
-      <div hover:bg-gray-2 py1 px2 text-sm>
+      <div v-if="props.data.nodeUpon" hover:bg-gray-2 py1 px2 text-sm @click.stop="onDelete">
         删除
       </div>
     </div>

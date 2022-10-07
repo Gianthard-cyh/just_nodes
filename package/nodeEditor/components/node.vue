@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
-import { inject, ref } from 'vue'
+import { inject, onMounted, ref } from 'vue'
 
 import { useDraggableInElement } from '../../common/composables/useDraggableInElement'
 import type { EditorData } from '../../common/types/editorData'
@@ -13,7 +13,7 @@ const props = defineProps<{
   activated: boolean
 }>()
 
-const nodeRef = { value: ref(null) }
+const nodeRef = { value: ref<HTMLElement | null>(null) }
 const globalData = inject<EditorData>('globalData')
 
 const { x, y } = useDraggableInElement({
@@ -33,10 +33,21 @@ const { x, y } = useDraggableInElement({
     }
   },
 })
+
+const openMenuOnNode = inject<(node: NodeData) => {}>('openMenuOnNode')
+onMounted(() => {
+  nodeRef.value.value!.oncontextmenu = () => {
+    onRightClick()
+    return false
+  }
+})
+function onRightClick() {
+  openMenuOnNode?.(props.data)
+}
 </script>
 
 <template>
-  <div :ref="nodeRef.value" opacity-80 bg-white rounded-6px fixed select-none :style="{ left: `${x}px`, top: `${y}px` }">
+  <div :ref="nodeRef.value" opacity-80 bg-white rounded-6px fixed select-none :style="{ left: `${x}px`, top: `${y}px` }" @click.right.stop="onRightClick">
     <div text-sm bg-blue-7 rounded-t-6px px2 py1 c-white border-1 border-b-gray-3 :class="{ 'border-gray-5': props.activated, ' border-gray-3': !props.activated }">
       {{ props.data.title }}
     </div>
