@@ -15,6 +15,7 @@ export function useDraggableInElement(
 ) {
   const x = ref(options.initPos ? options.initPos.x : 0)
   const y = ref(options.initPos ? options.initPos.y : 0)
+  const isDragging = ref(false)
   onMounted(async () => {
     await nextTick()
     if (!unref(options.container)) {
@@ -28,7 +29,6 @@ export function useDraggableInElement(
     const { elementX: ex, elementY: ey } = useMouseInElement(options.container)
     const { elementX: tx, elementY: ty } = useMouseInElement(options.target)
     let offsetX = ref(0), offsetY = ref(0)
-    const isDragging = ref(false)
 
     useEventListener(options.target, 'pointerdown', () => {
       if (!isDragging.value) {
@@ -52,5 +52,9 @@ export function useDraggableInElement(
       }
     })
   })
-  return { x, y }
+  function updatePos(xPos: number, yPos: number) {
+    x.value = xPos
+    y.value = yPos
+  }
+  return { x, y, isDragging, updatePos }
 }

@@ -86,10 +86,6 @@ const fps = useFps()
 </script>
 
 <template>
-  {{ data.edges }}
-  <br>
-  {{ data }}
-  fps:{{ fps }}
   <svg :ref="editorRef.value" h-full w-full @click.right="onRightClick" @click.left="onMenuClose">
     <defs>
       <GradientDefs :data="gradientData" />

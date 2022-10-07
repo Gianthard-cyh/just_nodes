@@ -10,7 +10,7 @@ const refContainer = { value: ref(null) }
 
 <template>
   <div :ref="refContainer.value" h-full w-full>
-    <Node v-for="item, i in props.data" :key="item.uid" :data="item" :container-ref="refContainer.value" shadow :activated="i === props.data.length - 1" />
+    <Node v-for="item, i in props.data" :key="item.id" :data="item" :container-ref="refContainer.value" shadow :activated="i === props.data.length - 1" />
   </div>
 </template>
 
