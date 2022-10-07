@@ -7,6 +7,7 @@ export interface PortOptions {
   cy?: number
   mode?: 'in' | 'out'
   type?: typeDefinition
+  value?: string | number
 }
 
 export interface PortDefinition {
@@ -22,6 +23,7 @@ export class PortData implements PortOptions {
   mode: 'in' | 'out'
   type: typeDefinition
   uid: string
+  value: string | number
 
   constructor(options: PortOptions) {
     this.title = options.title
@@ -30,5 +32,6 @@ export class PortData implements PortOptions {
     this.mode = options.mode ?? 'in'
     this.type = options.type ?? { color: 'rgba(200,200,200,1)', name: "any", input: 'input' }
     this.uid = uid().uid
+    this.value = options.value ?? 0
   }
 }

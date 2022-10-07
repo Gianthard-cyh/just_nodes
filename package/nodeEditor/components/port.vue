@@ -95,7 +95,7 @@ useResizeObserver(props.containerRef, updatePos)
         && !globalData?.edges.find(i => (i.from === props.data || i.to === props.data))
       "
     >
-      <input max-w-100px mx-2 rounded-3px px-1 py3px outline-none border border-gray-2 hover="bg-gray-1 border-gray-3" focus:bg-gray-1 @pointerdown.stop="() => {}">
+      <input v-model="props.data.value" max-w-100px mx-2 rounded-3px px-1 py3px outline-none border border-gray-2 hover="bg-gray-1 border-gray-3" focus:bg-gray-1 @pointerdown.stop="() => {}">
     </div>
     <svg v-if="data.mode === 'out'" relative width="10" height="10" right--13px>
       <circle cursor-crosshair r="4" cx="5" cy="5" :fill="props.data.type.color" stroke-bluegray @pointerdown.stop="onPointerDown" @pointerup="onPointerUp" />
